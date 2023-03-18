@@ -13,6 +13,9 @@ const fetchCountries = async name => {
     const response = await fetch(
       `https://restcountries.com/v3.1/name/${name}?fields=name,capital,population,flags,languages`
     );
+    countryList.textContent = '';
+    countryInfo.textContent = '';
+
     if (response.status === 404) {
       Notiflix.Notify.failure('Oops, there is no country with that name.', {
         timeout: 6000,
@@ -45,14 +48,13 @@ const onChange = event => {
 };
 
 const createCountriesList = countries => {
-  countryList.textContent = '';
   countries.forEach(country => {
     const countryListElement = document.createElement('li');
     countryListElement.append();
     countryList.insertAdjacentHTML(
       'beforeend',
       `<li>
-        <img src="${country.flags.svg}" alt="${country.name.official}" height="20" />
+        <img src="${country.flags.svg}" alt="${country.name.official}" width="40" />
         ${country.name.official}
       </li>`
     );
@@ -60,17 +62,25 @@ const createCountriesList = countries => {
 };
 
 const createCountryInfo = country => {
-  countryList.textContent = '';
-  // countryInfo.insertAdjacentHTML(
-  //   'beforeend',
-  //   `
-  //     <img src="${country.flags.svg}" alt="${country.name.official}" height="50" />
-  //     ${country.name.official}
-  //     ${country.capital}
-  //     ${country.population}
-  //     ${country.languages}
-  //   `
-  // );
+  countryInfo.insertAdjacentHTML(
+    'beforeend',
+    ` <p>
+        <img src="${country.flags.svg}" alt="${
+      country.name.official
+    }" width="100" />
+        <span class="country-name"><b>${country.name.official}</b></span>
+      </p>
+      <p>
+        <b>Capital:</b> ${country.capital}
+      </p>
+      <p>
+        <b>Population:</b> ${country.population}
+      </p>
+      <p>
+        <b>Languages:</b> ${Object.values(country.languages).join(', ')}
+      </p>
+    `
+  );
 };
 
 searchBox.addEventListener('input', debounce(onChange, DEBOUNCE_DELAY));
