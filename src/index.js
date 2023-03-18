@@ -36,7 +36,6 @@ const fetchCountries = async name => {
     if (countries.length === 1) {
       createCountryInfo(countries[0]);
     }
-    console.log('countries', countries);
   } catch (error) {
     console.log(error);
   }
